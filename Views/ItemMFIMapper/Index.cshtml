@@ -1,0 +1,359 @@
+﻿@using IMS2.Helpers
+@{
+    ViewData["Title"] = "Item MFI Mapper";
+    ViewBag.Title = "Item MFI Mapper";
+    ViewBag.pTitle = "Item MFI Mapper";
+    ViewBag.pageTitle = "Item MFI Mapper";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="card" id="customerList">
+            <div class="card-header border-bottom-dashed">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div>
+                            @if (ViewBag.ScreenRightRank == (int)EnumScreenRights.Delete)
+                            {
+                                <button class="btn btn-danger" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                            }
+                            @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Create)
+                            {
+                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Create</button>
+                            }
+                            @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Create)
+                            {
+                                <button type="button" class="btn btn-info">
+                                    <i class="ri-file-download-line align-bottom me-1"></i>
+                                    Import
+                                </button>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control search" placeholder="Search...">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-bottom-dashed border-bottom"></div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-1">
+                        <table class="table align-middle" id="itemTable">
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class="sort" data-sort="Code">Code</th>
+                                    <th class="sort" data-sort="Item">Item</th>
+                                    <th class="sort" data-sort="MRP">MRP</th>
+                                    <th class="sort" data-sort="Price">Price</th>
+                                    <th class="sort" data-sort="GSTPercent">GST Percent</th>
+                                    <th class="sort" data-sort="PriceIncludingGST">Price Including GST</th>
+                                    <th class="sort" data-sort="IsLMD">Is LMD</th>
+                                    <th class="sort" data-sort="action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @if (ViewData["ItemList"] is List<IMS2.Models.ItemMFIMapperModel> itemList)
+                                {
+                                    foreach (var item in itemList)
+                                    {
+                                        <tr>
+                                            <td class="Code">@item.Code</td>
+                                            <td class="Item">@item.Item</td>
+                                            <td class="MRP">@item.MRP</td>
+                                            <td class="Price">@item.Price</td>
+                                            <td class="GSTPercent">@item.GSTPercent</td>
+                                            <td class="PriceIncludingGST">
+                                                @{
+                                                    decimal price = item.Price;
+                                                    decimal gstPercent = item.GSTPercent;
+                                                    decimal priceIncludingGST = price + (gstPercent / 100m * price);
+                                                }
+                                                @priceIncludingGST.ToString("0.00")
+                                            </td>
+
+                                            <td class="IsLMD">@item.IsLMD</td>
+                                            <td>
+                                                <ul class="list-inline hstack gap-2 mb-0">
+                                                    @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Update)
+                                                    {
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+                                                            <a href="#" class="text-primary edit-item-btn" data-bs-toggle="modal" data-bs-target="#editModal-@item.DT_RowId" data-id="@item.DT_RowId">
+                                                                <i class="ri-pencil-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (ViewBag.ScreenRightRank == (int)EnumScreenRights.Delete)
+                                                    {
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Delete">
+                                                            <a href="#" class="text-danger d-inline-block remove-item-btn" onclick="openDeleteModal('@item.DT_RowId')" data-id="@item.DT_RowId">
+                                                                <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="noresult" style="display: none">
+                            <div class="text-center">
+                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a"
+                                           style="width:75px;height:75px">
+                                </lord-icon>
+                                <h5 class="mt-2">Sorry! No Result Found</h5>
+                                <p class="text-muted mb-0">
+                                    We've searched more than 150+ customers
+                                    We did not find any
+                                    customers for your search.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="pagination-wrap hstack gap-2">
+                            <a class="page-item pagination-prev @(ViewBag.PageNumber == 1 ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">
+                                Previous
+                            </a>
+                            <ul class="pagination listjs-pagination mb-0">
+                            </ul>
+                            <a class="page-item pagination-next @(ViewBag.PageNumber == ViewBag.TotalPages ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">
+                                Next
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Add Modal -->
+                <div class="modal fade" id="showModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-light p-3">
+                                <h5 class="modal-title" id="exampleModalLabel">Add New Item MFI Mapper</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+                            </div>
+                            <form id="createForm" action="@Url.Action("ManageItemMaster", "ItemMFIMapper")" method="post">
+                                <div class="modal-body">
+
+                                    <div class="mb-3">
+                                        <label for="ItemID" class="form-label">Item</label>
+                                        <select id="ItemID" name="ItemID" class="form-control" required>
+                                            <option value="">Select Item</option>
+                                            @foreach (var ItemCOB in ViewBag.ItemCBOs as List<SelectListItem>)
+                                            {
+                                                <option value="@ItemCOB.Value">@ItemCOB.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="MRP" class="form-label">MRP</label>
+                                        <input type="number" id="MRP" name="MRP" class="form-control" placeholder="Enter MRP" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="Price" class="form-label">Price</label>
+                                        <input type="number" id="Price" name="Price" class="form-control" placeholder="Enter Price" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="GSTPercent" class="form-label">GST Percent</label>
+                                        <input type="number" id="GSTPercent" name="GSTPercent" class="form-control" placeholder="Enter GST Percent" required />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="IsLMD" name="IsLMD" value="true">
+                                            <label class="form-check-label" for="IsLMD">Is LMD</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" name="action" value="Create" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modals -->
+                @foreach (var item in ViewData["ItemList"] as List<IMS2.Models.ItemMFIMapperModel>)
+                {
+                    <div class="modal fade" id="editModal-@item.DT_RowId" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-light p-3">
+                                    <h5 class="modal-title" id="editModalLabel">Edit Item MFI Mapper</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form id="editForm-@item.DT_RowId" asp-action="ManageItemMaster" asp-controller="ItemMFIMapper" method="post" autocomplete="off">
+                                    <div class="modal-body">
+                                        <input type="hidden" id="EditDT_RowId" name="DT_RowId" value="@item.DT_RowId" />
+
+                                        <div class="mb-3">
+                                            <label for="EditItemID" class="form-label">Item</label>
+                                            <select class="form-control" id="EditItemID" name="ItemID">
+                                                <option value="@item.ItemID">@item.Item</option>
+                                                @foreach (var ItemCOB in ViewBag.ItemCBOs as List<SelectListItem>)
+                                                {
+                                                    if (item.Item != ItemCOB.Text)
+                                                    {
+                                                        <option value="@ItemCOB.Value">@ItemCOB.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="EditMRP" class="form-label">MRP</label>
+                                            <input type="number" id="EditMRP" name="MRP" class="form-control" value="@item.MRP" placeholder="Enter MRP" required />
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="EditPrice" class="form-label">Price</label>
+                                            <input type="number" id="EditPrice" name="Price" class="form-control" value="@item.Price" placeholder="Enter Price" required />
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="EditGSTPercent" class="form-label">GST Percent</label>
+                                            <input type="number" id="EditGSTPercent" name="GSTPercent" class="form-control" value="@item.GSTPercent" placeholder="Enter GST Percent" required />
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                @{
+                                                    var checkedState = item.IsLMD ? "checked" : "";
+                                                }
+                                                <input class="form-check-input" type="checkbox" id="EditIsLMD" name="IsLMD" value="true" @checkedState>
+                                                <label class="form-check-label" for="EditIsLMD">Is LMD</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" name="action" value="Edit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this user?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Delete Modal -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+
+        var deleteId;
+
+        function openDeleteModal(id) {
+            deleteId = id;
+            console.log('DT_RowId:', id);
+            $('#deleteRecordModal').modal('show');
+        }
+
+        $(document).ready(function () {
+            $('#confirmDelete').click(function () {
+                $.ajax({
+                    url: '@Url.Action("DeleteItem", "ItemMFIMapper")',
+                    type: 'DELETE',
+                    data: { dtRowId: deleteId },
+                    success: function (response) {
+                        $('#deleteRecordModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error deleting user.');
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            var userList = new List('customerList', {
+                valueNames: ['PriceIncludingGST', 'GSTPercent', 'Price', 'MRP', 'Item', 'Code'],
+                pagination: {
+                    innerWindow: 1,
+                    outerWindow: 1,
+                    paginationClass: 'pagination',
+                    paginationItemClass: 'page-item',
+                    paginationAnchorClass: 'page-link',
+                    paginationActiveClass: 'active'
+                }
+            });
+
+            // Search input event handler
+            $('.search').on('keyup', function () {
+                var searchString = $(this).val().toLowerCase();
+                userList.search(searchString);
+                userList.update();
+            });
+        });
+
+        var selectedMFIName = $("#setting-field option:selected").text();
+        // retrieve cookie by name
+        function getCookie(name) {
+            var cookieValue = "";
+            if (document.cookie && document.cookie !== "") {
+                var cookies = document.cookie.split(";");
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $(document).ready(function () {
+            var selectedMFIName = getCookie("SelectedMFIName");
+            if (selectedMFIName) {
+                $("#selectedMFIName").text(selectedMFIName);
+            }
+        });
+    </script>
+}

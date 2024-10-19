@@ -1,0 +1,194 @@
+﻿@model IMS2.Models.UserCreationModel
+
+@{
+    ViewData["Title"] = "WareHouse Stock Transfer";
+    ViewBag.Title = "WareHouse Stock Transfer";
+    ViewBag.pTitle = "WareHouse Stock Transfer";
+    ViewBag.pageTitle = "WareHouseStockTransfer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <!-- Sweet Alert css-->
+    <link href="~/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="row mt-2">
+    <div class="col-xs-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">WareHouse Stock Transfer</h3>
+            </div>
+            <div class="card-body">
+                <div class="col-md-6" style="margin:auto;float:none;">
+                    <form id="frm">
+
+                        <div class="form-group">
+                            <label>WareHouse Code</label>
+                            <select id="warehouse-field" name="WareHouseID" class="form-control" data-plugin="choices" data-choices data-choices-search-enabled="true">
+                                <option value="">Select Code</option>
+                                @foreach (var wareHouse in ViewData["WareHouseCode"] as List<SelectListItem>)
+                                {
+                                    <option value="@wareHouse.Value">@wareHouse.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group mt-2">
+                            <label>Item</label>
+                            <select id="item-field" name="ItemID" class="form-control" data-plugin="choices" data-choices data-choices-search-enabled="true">
+                                <option value="">Select Code</option>
+                                @foreach (var item in ViewData["ItemList"] as List<SelectListItem>)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group text-center mt-2">
+                            <button type="button" class="btn btn-primary" onclick="GetData();">Get Data</button>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label>Current Stock Qty: </label>
+                            <label id="lblQty"></label>
+                        </div>
+
+
+                        <hr />
+                        <h3>Transfer to WareHouse:</h3>
+
+                        <div class="form-group mt-2">
+                            <label>WareHouse Code</label>
+                            <select id="warehouse-fieldto" name="WareHouseID" class="form-control" data-plugin="choices" data-choices data-choices-search-enabled="true">
+                                <option value="">Select Code</option>
+                                @foreach (var wareHouse in ViewData["WareHouseCode"] as List<SelectListItem>)
+                                {
+                                    <option value="@wareHouse.Value">@wareHouse.Text</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label>Enter Qty to Transfer(Plz note, in case of Mobile, it should be equal to no. of IMEIs being inserted below as comma separated):</label>
+                            <input id="txtQtyToTransfer" type="text" />
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label>Mobile IMEI Nos.</label><br />
+                            <input id="txtIMEINos" style="width:470px" type="text" />
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label>Remarks:</label>
+                            <input id="txtRemarks" type="text" />
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label>Invoice No.:</label><span style="color:red; margin-left:5px">*</span>
+                            <input id="txtInvoiceNo" type="text" />
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label>Invoice File Upload</label> <br />
+                            <input id="fileInvoice" type="file" class="form-control" accept=".pdf, .docx, .doc, image/*">
+                        </div>
+
+                        <div class="form-group text-center mt-2">
+                            <button type="button" class="btn btn-primary" onclick="SaveData();">Ok</button>
+                        </div>
+
+                        <hr />
+                        <h3>Download Invoice File:</h3>
+                        <div class="form-group mt-2">
+                            <label>Invoice No.:</label><span style="color:red; margin-left:5px">*</span>
+                            <input id="txtInvoiceNoToDownload" type="text" />
+                        </div>
+
+                        <div class="form-group text-center mt-2">
+                            <button type="button" class="btn btn-primary" onclick="DownloadInvoice();">Ok</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- Sweet Alerts js -->
+    <script src="~/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- list.js init -->
+    <script src="~/assets/js/pages/crm-customers.init.js"></script>
+
+    <script src="~/assets/js/pages/modal.init.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/assets/libs/choices.js/choices.min.js"></script>
+
+    <script>
+        var choices=new Choices('[data-choices]', {
+            searchEnabled: true,
+            itemSelectText: 'Select an option'
+            });
+
+
+        function GetData() {
+            var wareHouseID = $("#warehouse-field").val();
+            var itemID = $("#item-field").val();
+
+            if (wareHouseID && itemID) {
+                $.ajax({
+                    url: '@Url.Action("GetStock", "WareHouseStockTransfer")',
+                    type: 'POST',
+                    data: { WareHouseID: wareHouseID, ItemID: itemID },
+                    success: function (response) {
+                        debugger;
+                        $("#lblQty").text(response.stock);
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while retrieving the stock: ' + error
+                        });
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Please select both WareHouse and Item.'
+                });
+            }
+        }
+
+        function SaveData() {
+            var formData = new FormData();
+            formData.append('FromWareHouseID', $('#warehouse-field').val());
+            formData.append('ItemID', $('#item-field').val());
+            formData.append('ToWareHouseID', $('#warehouse-fieldto').val());
+            formData.append('Stock', $('#txtQtyToTransfer').val());
+            formData.append('IMEINos', $('#txtIMEINos').val());
+            formData.append('Remarks', $('#txtRemarks').val());
+            formData.append('InvoiceNo', $('#txtInvoiceNo').val());
+
+            $.ajax({
+                url: '@Url.Action("TransferStock", "WareHouseStockTransfer")',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (error) {
+                    alert(error.responseJSON.message);
+                }
+            });
+        }
+
+    </script>
+}

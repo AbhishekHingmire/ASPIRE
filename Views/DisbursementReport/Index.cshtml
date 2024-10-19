@@ -1,0 +1,157 @@
+﻿@using IMS2.Helpers
+@{
+    ViewData["Title"] = "GIT Report";
+    ViewBag.Title = "GIT Report";
+    ViewBag.pTitle = "GIT Report";
+    ViewBag.pageTitle = "GIT Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    <style>
+        input[type="date"]::-webkit-datetime-edit {
+            color: transparent;
+        }
+
+        input[type="date"]::-webkit-date-and-time-value {
+            color: transparent;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="col-md-6" style="margin:auto;float:none;">
+            <form id="frm">
+                <div class="form-group">
+                    <label class="form-label">Region</label>
+                    <select id="BranchTypeID" class="form-control" required>
+                        <option value="">Select Branch Type</option>
+                        @foreach (var branch in ViewBag.BranchTypesList as List<SelectListItem>)
+                        {
+                            <option value="@branch.Value">@branch.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Branch Code</label>
+                    <select id="cboBranchCode" class="form-control" required>
+                        <option value="">Select Branch Code</option>
+                        <!-- Options will be populated via AJAX -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Item</label>
+                    <select id="txtItem" class="form-control" required>
+                        <option value="">Select Item Type</option>
+                        @foreach (var item in ViewBag.ItemList as List<SelectListItem>)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>From Date</label>
+                    <input id="fromDate" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>To Date</label>
+                    <input id="toDate" class="form-control" />
+                </div>
+                <br />
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-primary" id="downloadReportBtn">Download Report</button>
+                </div>
+            </form>
+            <br /><br />
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        $(document).ready(function () {
+            var encodedMFIName = "@Context.Request.Cookies["SelectedMFIName"]";
+            var decodedMFIName = decodeURIComponent(encodedMFIName);
+            $('#selectedMFIName').text(decodedMFIName);
+
+            var defaultRegionId = -999;
+
+            loadBranchCodes(defaultRegionId);
+
+            $('#BranchTypeID').change(function () {
+                var regionId = $(this).val();
+                if (!regionId) {
+                    regionId = defaultRegionId;
+                }
+                loadBranchCodes(regionId);
+            });
+        });
+
+        function loadBranchCodes(regionId) {
+            debugger;
+            $.ajax({
+                url: '@Url.Action("GetBranchCodes", "DisbursementReport")',
+                type: 'POST',
+                data: { regionId: regionId },
+                success: function (data) {
+                    if (data.result === 'OK') {
+                        var branchCodeSelect = $('#cboBranchCode');
+                        branchCodeSelect.empty();
+                        branchCodeSelect.append('<option value="">Select Branch Code</option>');
+
+                        $.each(data.options, function (index, item) {
+                            branchCodeSelect.append('<option value="' + item.id + '">' + item.code + '</option>');
+                        });
+                    } else {
+                        console.error('Unexpected result:', data.Result);
+                        alert('No branch codes found.');
+                    }
+                },
+                error: function () {
+                    alert('Error fetching branch codes');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            debugger;
+            $("#fromDate").datepicker({ format: 'yyyy-mm-dd' });
+            $("#toDate").datepicker({ format: 'yyyy-mm-dd' });
+        });
+
+        $("#downloadReportBtn").click(function () {
+            var branchCode = $("#cboBranchCode").val() || "--All--";
+            var region = $("#BranchTypeID").val() || "--All--";
+            var item = $("#txtItem").val() || -1;
+            var fromDate = $("#fromDate").val() || "";
+            var toDate = $("#toDate").val() || "";
+
+            var queryString = $.param({
+                BranchCode: branchCode,
+                Region: region,
+                Item: item, 
+                FromDate: fromDate,
+                ToDate: toDate,
+            });
+
+            var url = '/DisbursementReport/ExportSalesReport?' + queryString;
+
+            window.open(url, '_blank');
+        });
+
+
+    </script>
+}

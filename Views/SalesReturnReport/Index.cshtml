@@ -1,0 +1,180 @@
+﻿@using IMS2.Helpers
+@{
+    ViewData["Title"] = "Sales Return Report";
+    ViewBag.Title = "Sales Return Report";
+    ViewBag.pTitle = "Sales Return Report";
+    ViewBag.pageTitle = "Sales Return Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="card" id="customerList">
+            <div class="card-header border-bottom-dashed">
+                <div class="row">
+                    <div class="col-md-8">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control search" placeholder="Search...">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-bottom-dashed border-bottom"></div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-1">
+                        <table class="table align-middle" id="itemTable">
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class="sort" data-sort="OrderNo">Order No.</th>
+                                    <th class="sort" data-sort="LoanAppNo">Loan App No.</th>
+                                    <th class="sort" data-sort="CustomerID">Customer ID</th>
+                                    <th class="sort" data-sort="SKU"></th>
+                                    <th class="sort" data-sort="ProductName">Product Name</th>
+                                    <th class="sort" data-sort="Qty">Qty</th>
+                                    <th class="sort" data-sort="MRP">MRP</th>
+                                    <th class="sort" data-sort="BasicRate">Basic Rate</th>
+                                    <th class="sort" data-sort="GSTPercent">GST Percent</th>
+                                    <th class="sort" data-sort="CGST">CGST</th>
+                                    <th class="sort" data-sort="SGST">SGST</th>
+                                    <th class="sort" data-sort="IGST">IGST</th>
+                                    <th class="sort" data-sort="SaleRate">Sale Rate</th>
+                                    <th class="sort" data-sort="TotalAmount">Total Amount</th>
+                                    <th class="sort" data-sort="BranchID">Branch ID</th>
+                                    <th class="sort" data-sort="BranchName">Branch Name</th>
+                                    <th class="sort" data-sort="OrderDate">Order Date</th>
+                                    <th class="sort" data-sort="OrderStatus">Order Status</th>
+                                    <th class="sort" data-sort="AgainstOriginalInvoiceNo">Against Original Invoice No</th>
+                                    <th class="sort" data-sort="InvoiceNo">Invoice No</th>
+                                    <th class="sort" data-sort="InvoiceDate">InvoiceDate</th>
+                                    <th class="sort" data-sort="">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @if (ViewData["ItemList"] is List<IMS2.Models.SalesReturnReportModel> itemList)
+                                {
+                                    foreach (var item in itemList)
+                                    {
+                                        <tr>
+                                            <td class="OrderNo">@item.OrderNo</td>
+                                            <td class="LoanAppNo">@item.LoanAppNo</td>
+                                            <td class="CustomerID">@item.CustomerID</td>
+                                            <td class="SKU">@item.SKU</td>
+                                            <td class="ProductName">@item.ProductName</td>
+                                            <td class="Qty">@item.Qty</td>
+                                            <td class="MRP">@item.MRP</td>
+                                            <td class="BasicRate">@item.BasicRate</td>
+                                            <td class="GSTPercent">@item.GSTPercent</td>
+                                            <td class="CGST">@item.CGST</td>
+                                            <td class="SGST">@item.SGST</td>
+                                            <td class="IGST">@item.IGST</td>
+                                            <td class="SaleRate">@item.SaleRate</td>
+                                            <td class="TotalAmount">@item.TotalAmount</td>
+                                            <td class="BranchID">@item.BranchID</td>
+                                            <td class="BranchName">@item.BranchName</td>
+                                            <td class="OrderDate">@item.OrderDate</td>
+                                            <td class="OrderStatus">@item.OrderStatus</td>
+                                            <td class="AgainstOriginalInvoiceNo">@item.AgainstOriginalInvoiceNo</td>
+                                            <td class="InvoiceNo">@item.InvoiceNo</td>
+                                            <td class="InvoiceDate">@item.InvoiceDate</td>
+                                            <td>
+                                               <button type="button">Invoice</button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="noresult" style="display: none">
+                            <div class="text-center">
+                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a"
+                                           style="width:75px;height:75px">
+                                </lord-icon>
+                                <h5 class="mt-2">Sorry! No Result Found</h5>
+                                <p class="text-muted mb-0">
+                                    We've searched more than 150+ customers
+                                    We did not find any
+                                    customers for your search.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="pagination-wrap hstack gap-2">
+                            <a class="page-item pagination-prev @(ViewBag.PageNumber == 1 ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">
+                                Previous
+                            </a>
+                            <ul class="pagination listjs-pagination mb-0">
+                            </ul>
+                            <a class="page-item pagination-next @(ViewBag.PageNumber == ViewBag.TotalPages ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">
+                                Next
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+
+        $(document).ready(function () {
+            var userList = new List('customerList', {
+                valueNames: ['OrderNo', 'LoanAppNo', 'CustomerID', 'SKU', 'ProductName', 'Qty', 'MRP', 'BasicRate', 'GSTPercent', 'CGST', 'SGST', 'IGST', 'SaleRate', 'TotalAmount', 'BranchID', 'BranchName', 'OrderDate', 'OrderStatus', 'AgainstOriginalInvoiceNo', 'InvoiceNo', 'InvoiceDate'],
+                pagination: {
+                    innerWindow: 1,
+                    outerWindow: 1,
+                    paginationClass: 'pagination',
+                    paginationItemClass: 'page-item',
+                    paginationAnchorClass: 'page-link',
+                    paginationActiveClass: 'active'
+                }
+            });
+
+            $('.search').on('keyup', function () {
+                var searchString = $(this).val().toLowerCase();
+                userList.search(searchString);
+                userList.update();
+            });
+        });
+
+        var selectedMFIName = $("#setting-field option:selected").text();
+        function getCookie(name) {
+            var cookieValue = "";
+            if (document.cookie && document.cookie !== "") {
+                var cookies = document.cookie.split(";");
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $(document).ready(function () {
+            var selectedMFIName = getCookie("SelectedMFIName");
+            if (selectedMFIName) {
+                $("#selectedMFIName").text(selectedMFIName);
+            }
+        });
+    </script>
+}

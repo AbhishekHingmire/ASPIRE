@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\IMS2.props" />
+</Project>

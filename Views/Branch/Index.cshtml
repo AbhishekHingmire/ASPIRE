@@ -1,0 +1,465 @@
+﻿@using IMS2.Helpers
+@model BranchMasterModel
+@{
+    ViewData["Title"] = "Branch";
+    ViewBag.Title = "Branch";
+    ViewBag.pTitle = "Branch";
+    ViewBag.pageTitle = "Branch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="card" id="customerList">
+            <div class="card-header border-bottom-dashed">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div>
+                            @if (ViewBag.ScreenRightRank == (int)EnumScreenRights.Delete)
+                            {
+                                <button class="btn btn-danger" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                            }
+                            @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Create)
+                            {
+                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Create</button>
+                            }
+                            @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Create)
+                            {
+                                <button type="button" class="btn btn-info">
+                                    <i class="ri-file-download-line align-bottom me-1"></i>
+                                    Import
+                                </button>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control search" placeholder="Search...">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-bottom-dashed border-bottom"></div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-1">
+                        <table class="table align-middle" id="itemTable">
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class="sort" data-sort="ParentBranchType">Parent Branch Type</th>
+                                    <th class="sort" data-sort="ParentCode">Parent Code</th>
+                                    <th class="sort" data-sort="ParentName">Parent Name</th>
+                                    <th class="sort" data-sort="BranchType">Branch Type</th>
+                                    <th class="sort" data-sort="Code">Code</th>
+                                    <th class="sort" data-sort="Name">Name</th>
+                                    <th class="sort" data-sort="Pincode">Pincode</th>
+                                    <th class="sort" data-sort="Phone">Phone</th>
+                                    <th class="sort" data-sort="Username">Username</th>
+                                    <th class="sort" data-sort="Password">Password</th>
+                                    <th class="sort" data-sort="Action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @if (ViewData["BranchList"] is List<IMS2.Models.BranchModel> itemList)
+                                {
+                                    foreach (var item in itemList)
+                                    {
+                                        <tr>
+                                            <td class="ParentBranchType">@item.ParentBranchType</td>
+                                            <td class="ParentCode">@item.ParentCode</td>
+                                            <td class="ParentName">@item.ParentName</td>
+                                            <td class="BranchType">@item.BranchType</td>
+                                            <td class="Code">@item.Code</td>
+                                            <td class="Name">@item.Name</td>
+                                            <td class="Pincode">@item.Pincode</td>
+                                            <td class="Phone">@item.Phone</td>
+                                            <td class="UserName">@item.UserName</td>
+                                            <td class="Password">@item.Password</td>
+                                            <td>
+                                                <ul class="list-inline hstack gap-2 mb-0">
+                                                    @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Update)
+                                                    {
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+                                                            <a href="#" class="text-primary edit-item-btn" data-bs-toggle="modal" data-bs-target="#editModal-@item.DT_RowId" data-id="@item.DT_RowId">
+                                                                <i class="ri-pencil-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (ViewBag.ScreenRightRank == (int)EnumScreenRights.Delete)
+                                                    {
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Delete">
+                                                            <a href="#" class="text-danger d-inline-block remove-item-btn" onclick="openDeleteModal('@item.DT_RowId')" data-id="@item.DT_RowId">
+                                                                <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="noresult" style="display: none">
+                            <div class="text-center">
+                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a"
+                                           style="width:75px;height:75px">
+                                </lord-icon>
+                                <h5 class="mt-2">Sorry! No Result Found</h5>
+                                <p class="text-muted mb-0">
+                                    We've searched more than 150+ customers
+                                    We did not find any
+                                    customers for your search.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="pagination-wrap hstack gap-2">
+                            <a class="page-item pagination-prev @(ViewBag.PageNumber == 1 ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">
+                                Previous
+                            </a>
+                            <ul class="pagination listjs-pagination mb-0">
+                            </ul>
+                            <a class="page-item pagination-next @(ViewBag.PageNumber == ViewBag.TotalPages ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">
+                                Next
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Modal -->
+                <div class="modal fade" id="showModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-light p-3">
+                                <h5 class="modal-title" id="exampleModalLabel">Add New Branch</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+                            </div>
+                            <form id="createForm" asp-action="CreateBranch" asp-controller="Branch" method="post">
+                                <div class="modal-body">
+
+                                    <div class="mb-3">
+                                        <label asp-for="BranchTypeID" class="form-label">BranchType</label>
+                                        <select id="BranchTypeID" asp-for="BranchTypeID" class="form-control" required>
+                                            <option value="">Select Branch Type</option>
+                                            @foreach (var branch in ViewBag.BranchTypesList as List<SelectListItem>)
+                                            {
+                                                <option value="@branch.Value">@branch.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3" id="ParentIDContainer">
+                                        <label asp-for="ParentID" class="form-label">Parent</label>
+                                        <select id="ParentID" asp-for="ParentID" class="form-control" required>
+                                            <option value="">Select Parent</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Code" class="form-label">Code</label>
+                                        <input type="text" id="Code" asp-for="Code" class="form-control" placeholder="Enter code">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Name" class="form-label">Name</label>
+                                        <input type="text" id="Name" asp-for="Name" class="form-control" placeholder="Enter Name">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="AddressLine1" class="form-label">AddressLine1</label>
+                                        <input type="text" id="AddressLine1" asp-for="AddressLine1" class="form-control" placeholder="Enter Address 1">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="AddressLine2" class="form-label">AddressLine2</label>
+                                        <input type="text" id="AddressLine2" asp-for="AddressLine2" class="form-control" placeholder="Enter AddressLine2">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="pincode" class="form-label">Pincode</label>
+                                        <input type="text" id="pincode" asp-for="Pincode" class="form-control" placeholder="Enter pincode">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Phone" class="form-label">Phone</label>
+                                        <input type="number" id="Phone" asp-for="Phone" class="form-control" placeholder="Enter Phone">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Username" class="form-label">Username</label>
+                                        <input type="text" id="Username" asp-for="Username" class="form-control" placeholder="Enter Username">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Password" class="form-label">Password</label>
+                                        <input type="password" id="Password" asp-for="Password" class="form-control" placeholder="Enter Password">
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" name="action" value="Create" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modals -->
+                @foreach (var item in ViewData["BranchList"] as List<IMS2.Models.BranchModel>)
+                {
+                    <div class="modal fade" id="editModal-@item.DT_RowId" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-light p-3">
+                                    <h5 class="modal-title" id="editModalLabel">Edit Branch</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form id="editForm-@item.DT_RowId" asp-action="CreateBranch" asp-controller="Branch" method="post" autocomplete="off">
+                                    <div class="modal-body">
+                                        <input type="hidden" id="EditDT_RowId" name="DT_RowId" value="@item.DT_RowId" />
+
+                                        <div class="mb-3">
+                                            <label asp-for="BranchTypeID" class="form-label">BranchType</label>
+                                            <select id="BranchTypeID-@item.DT_RowId" name="BranchTypeID" class="form-control" required>
+                                                <option value="@item.BranchTypeID">@item.BranchType</option>
+                                                @foreach (var branch in ViewBag.BranchTypesList as List<SelectListItem>)
+                                                {
+                                                    if (item.BranchType != branch.Text)
+                                                    {
+                                                        <option value="@branch.Value">@branch.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3" id="ParentIDContainer-@item.DT_RowId">
+                                            <label asp-for="ParentID" class="form-label">Parent</label>
+                                            <select id="ParentID-@item.DT_RowId" name="ParentID" class="form-control" required>
+                                                <option value="@item.ParentID">@item.ParentName</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Code" class="form-label">Code</label>
+                                            <input type="text" id="Code" asp-for="Code" value="@item.Code" class="form-control" placeholder="Enter code" readonly>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Name" class="form-label">Name</label>
+                                            <input type="text" id="Name" asp-for="Name" value="@item.Name" class="form-control" placeholder="Enter Name">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="AddressLine1" class="form-label">AddressLine1</label>
+                                            <input type="text" id="AddressLine1" asp-for="AddressLine1" value="@item.AddressLine1" class="form-control" placeholder="Enter Address 1">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="AddressLine2" class="form-label">AddressLine2</label>
+                                            <input type="text" id="AddressLine2" asp-for="AddressLine2" value="@item.AddressLine2" class="form-control" placeholder="Enter AddressLine2">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="pincode" class="form-label">Pincode</label>
+                                            <input type="text" id="pincode" asp-for="Pincode" value="@item.Pincode" class="form-control" placeholder="Enter pincode">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Phone" class="form-label">Phone</label>
+                                            <input type="number" id="Phone" asp-for="Phone" value="@item.Phone" class="form-control" placeholder="Enter Phone">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Username" class="form-label">Username</label>
+                                            <input type="text" id="Username" asp-for="Username" value="@item.UserName" class="form-control" placeholder="Enter Username" readonly>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Password" class="form-label">Password</label>
+                                            <input type="password" id="Password" asp-for="Password" value="@item.Password" class="form-control" placeholder="Enter Password" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" name="action" value="Edit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this user?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Delete Modal -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        $(document).ready(function () {
+            var encodedMFIName = "@Context.Request.Cookies["SelectedMFIName"]";
+            var decodedMFIName = decodeURIComponent(encodedMFIName);
+            $('#selectedMFIName').text(decodedMFIName);
+
+            $('#BranchTypeID').change(function () {
+                var selectedBranchTypeID = $(this).val();
+
+                if (selectedBranchTypeID == '-99') {
+                    $('#ParentIDContainer').hide();
+                    $('#ParentID').prop('required', false);
+                } else {
+                    $('#ParentIDContainer').show();
+                    $('#ParentID').prop('required', true);
+
+                    $.ajax({
+                        url: '@Url.Action("GetParentBranches", "Branch")',
+                        type: 'GET',
+                        data: {
+                            branchTypeID: selectedBranchTypeID,
+                        },
+                        success: function (data) {
+                            debugger;
+                            var parentDropdown = $('#ParentID');
+                            parentDropdown.empty();
+                            parentDropdown.append('<option value="">Select Parent</option>');
+
+                            $.each(data, function (index, item) {
+                                debugger
+                                parentDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.log('Error: ' + error);
+                        }
+                    });
+                }
+            });
+
+            $('#BranchTypeID').trigger('change');
+        });
+
+        $(document).ready(function () {
+            $('[id^=BranchTypeID-]').change(function () {
+                var modalId = $(this).attr('id').split('-')[1];
+                var selectedBranchTypeID = $(this).val();
+
+                if (selectedBranchTypeID == '-99') {
+                    $('#ParentIDContainer-' + modalId).hide();
+                    $('#ParentID-' + modalId).prop('required', false);
+                } else {
+                    $('#ParentIDContainer-' + modalId).show();
+                    $('#ParentID-' + modalId).prop('required', true);
+
+                    $.ajax({
+                        url: '@Url.Action("GetParentBranches", "Branch")',
+                        type: 'GET',
+                        data: {
+                            BranchTypeID: selectedBranchTypeID,
+                        },
+                        success: function (data) {
+                            var parentDropdown = $('#ParentID-' + modalId);
+                            parentDropdown.empty();
+                            parentDropdown.append('<option value="">Select Parent</option>');
+
+                            $.each(data, function (index, item) {
+                                parentDropdown.append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.log('Error: ' + error);
+                        }
+                    });
+                }
+            });
+
+            $('[id^=BranchTypeID-]').each(function () {
+                $(this).trigger('change');
+            });
+        });
+
+
+        $(document).ready(function () {
+            window.openDeleteModal = function (userId) {
+                $('#deleteRecordModal').modal('show');
+
+                $('#confirmDelete').off('click').on('click', function () {
+                    deleteUser(userId);
+                });
+            }
+
+            function deleteUser(userId) {
+                $.ajax({
+                    url: '@Url.Action("DeleteBranch", "Branch")',
+                    type: 'DELETE',
+                    data: { id: userId },
+                    success: function (response) {
+                        $('#deleteRecordModal').modal('hide');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error deleting user.');
+                    }
+                });
+            }
+        });
+
+        $(document).ready(function () {
+            var userList = new List('customerList', {
+                valueNames: ['Password', 'UserName', 'Phone', 'Pincode', 'Name', 'Code', 'BranchType', 'ParentName', 'ParentCode', 'ParentBranchType'],
+                pagination: {
+                    innerWindow: 1,
+                    outerWindow: 1,
+                    paginationClass: 'pagination',
+                    paginationItemClass: 'page-item',
+                    paginationAnchorClass: 'page-link',
+                    paginationActiveClass: 'active'
+                }
+            });
+
+            // Search input event handler
+            $('.search').on('keyup', function () {
+                var searchString = $(this).val().toLowerCase();
+                userList.search(searchString);
+                userList.update();
+            });
+        });
+    </script>
+}

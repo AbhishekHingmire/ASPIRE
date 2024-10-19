@@ -1,0 +1,139 @@
+﻿@using IMS2.Helpers
+@{
+    ViewData["Title"] = "State Region Cash Sale Report";
+    ViewBag.Title = "State Region Cash Sale Report";
+    ViewBag.pTitle = "State Region Cash Sale Report";
+    ViewBag.pageTitle = "State Region Cash Sale Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="card" id="customerList">
+            <div class="card-body border-bottom-dashed border-bottom"></div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-1">
+                        <table class="table align-middle" id="tblBranchStock">
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class="sort" data-sort="CashReceiptNo">Cash Receipt No.</th>
+                                    <th class="sort" data-sort="DateOfCashSale">Date of Cash Sale</th>
+                                    <th class="sort" data-sort="TotalAmount">Total Amount</th>
+                                    <th class="sort" data-sort="State">State</th>
+                                    <th class="sort" data-sort="Region">Region</th>
+                                    <th class="sort" data-sort="Branch">Branch</th>
+                                    <th class="sort" data-sort="Item">Item</th>
+                                    <th class="sort" data-sort="CustomerName">Customer Name</th>
+                                    <th class="sort" data-sort="Phone">Phone</th>
+                                    <th class="sort" data-sort="Address">Address</th>
+                                    <th class="sort" data-sort="ZipCode">Zip Code</th>
+                                    <th class="sort" data-sort="AadharNo">Aadhar No.</th>
+                                    <th class="sort" data-sort="CSOEmployeeCode">CSO Employee Code</th>
+                                    <th class="sort" data-sort="InvoiceDate">Invoice Date</th>
+                                    <th class="sort" data-sort="InvoiceNo">Invoice No</th>
+                                    <th class="sort" data-sort="Status">Status</th>
+                                    <th class="sort" data-sort="DeliveryDate">Delivery Date</th>
+                                    <th class="sort" data-sort="DisbursementDate">Disbursement Date</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <!-- Data rows will be inserted here -->
+                            </tbody>
+                        </table>
+                        <div class="noresult" style="display: none">
+                            <div class="text-center">
+                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a"
+                                           style="width:75px;height:75px">
+                                </lord-icon>
+                                <h5 class="mt-2">Sorry! No Result Found</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="pagination-wrap hstack gap-2">
+                            <a class="page-item pagination-prev @(ViewBag.PageNumber == 1 ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">
+                                Previous
+                            </a>
+                            <ul class="pagination listjs-pagination mb-0"></ul>
+                            <a class="page-item pagination-next @(ViewBag.PageNumber == ViewBag.TotalPages ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">
+                                Next
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+
+        $.ajax({
+            url: '@Url.Action("GetCashSaleReport", "StateRegionCashSaleReport")',
+            type: 'POST',
+            success: function (response) {
+                if (response.result === 'OK') {
+                    var tableBody = $('#tblBranchStock tbody');
+                    tableBody.empty();
+
+                    // Check if there are results
+                    if (response.options.length === 0) {
+                        $('.noresult').show();
+                    } else {
+                        $('.noresult').hide();
+
+                        $.each(response.options, function (index, item) {
+                            tableBody.append(
+                                '<tr>' +
+                                '<td>' + item.cashReciptNo + '</td>' +
+                                '<td>' + item.cashSaleDate + '</td>' +
+                                '<td>' + item.totalAmount + '</td>' +
+                                '<td>' + item.state + '</td>' +
+                                '<td>' + item.region + '</td>' +
+                                '<td>' + item.branch + '</td>' +
+                                '<td>' + item.item + '</td>' +
+                                '<td>' + item.customerName + '</td>' +
+                                '<td>' + item.phone + '</td>' +
+                                '<td>' + item.address + '</td>' +
+                                '<td>' + item.addressZip + '</td>' +
+                                '<td>' + item.aadharNo + '</td>' +
+                                '<td>' + item.employeeCode + '</td>' +
+                                '<td>' + item.invoiceDate + '</td>' +
+                                '<td>' + item.invoiceNo + '</td>' +
+                                '<td>' + item.orderStatus + '</td>' +
+                                '<td>' + item.deliveryDate + '</td>' +
+                                '<td>' + item.disbursementDate + '</td>' +
+                                '</tr>'
+                            );
+                        });
+                    }
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function () {
+                alert('Error fetching data.');
+            }
+        });
+
+
+
+
+    </script>
+}

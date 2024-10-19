@@ -1,0 +1,548 @@
+﻿@using IMS2.Helpers
+@model PurchaseOrders
+
+@{
+    ViewData["Title"] = "Purchase Order";
+    ViewBag.Title = "Purchase Order";
+    ViewBag.pTitle = "Purchase Order";
+    ViewBag.pageTitle = "Purchase Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="card" id="customerList">
+            <div class="card-header border-bottom-dashed">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div>
+                            @if (ViewBag.ScreenRightRank == (int)EnumScreenRights.Delete)
+                            {
+                                <button class="btn btn-danger" id="remove-actions" onClick="deleteMultiple()"><i class="ri-delete-bin-2-line"></i></button>
+                            }
+                            @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Create)
+                            {
+                                <button type="button" class="btn btn-success add-btn" data-bs-toggle="modal" id="create-btn" data-bs-target="#showModal"><i class="ri-add-line align-bottom me-1"></i> Create</button>
+                            }
+                            @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Create)
+                            {
+                                <button type="button" class="btn btn-info">
+                                    <i class="ri-file-download-line align-bottom me-1"></i>
+                                    Import
+                                </button>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control search" placeholder="Search...">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-bottom-dashed border-bottom"></div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-1">
+                        <table class="table align-middle" id="itemTable">
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class="sort" data-sort="POno">PO No</th>
+                                    <th class="sort" data-sort="PORef">PO Ref</th>
+                                    <th class="sort" data-sort="OrderDate">Order Date</th>
+                                    <th class="sort" data-sort="POType">PO Type</th>
+                                    <th class="sort" data-sort="Supplier">Supplier</th>
+                                    <th class="sort" data-sort="Item">Item</th>
+                                    <th class="sort" data-sort="PoQty">Po Qty</th>
+                                    <th class="sort" data-sort="ReceivedQty">Received Qty</th>
+                                    <th class="sort" data-sort="BalanceQty">Balance Qty</th>
+                                    <th class="sort" data-sort="TotalPOAmount">Total PO Amount</th>
+                                    <th class="sort" data-sort="BillTo">Bill To</th>
+                                    <th class="sort" data-sort="ShipTo">Ship To</th>
+                                    <th class="sort" data-sort="Partner">Partner</th>
+                                    <th class="sort" data-sort="PaymentTearms">Payment Tearms</th>
+                                    <th class="sort" data-sort="Company">Company</th>
+                                    <th class="sort" data-sort="Action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                @if (ViewData["ItemList"] is List<IMS2.Models.PurchaseOrderModel> itemList)
+                                {
+                                    foreach (var item in itemList)
+                                    {
+                                        <tr>
+                                            <td class="PO_No">@item.PO_No</td>
+                                            <td class="PORef">@item.PORef</td>
+                                            <td class="OrderDate">@item.OrderDate</td>
+                                            <td class="POType">@item.POType</td>
+                                            <td class="Supplier">@item.Supplier</td>
+                                            <td class="Item">@item.Item</td>
+                                            <td class="Qty">@item.Qty</td>
+                                            <td class="ReceivedQty">@item.ReceivedQty</td>
+                                            <td class="AvailableQty">@item.AvailableQty</td>
+                                            <td class="TotalAmount">@item.TotalAmount</td>
+                                            <td class="BillTo">@item.BillTo</td>
+                                            <td class="ShipTo">@item.ShipTo</td>
+                                            <td class="Partner">@item.Partner</td>
+                                            <td class="PaymentTerms">@item.PaymentTerms</td>
+                                            <td class="PO_Company">@item.PO_Company</td>
+                                            <td>
+                                                <ul class="list-inline hstack gap-2 mb-0">
+                                                    @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Update)
+                                                    {
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Edit">
+                                                            <a href="#" class="text-primary edit-item-btn" data-bs-toggle="modal" data-bs-target="#editModal-@item.DT_RowId" data-id="@item.DT_RowId">
+                                                                <i class="ri-pencil-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (ViewBag.ScreenRightRank == (int)EnumScreenRights.Delete)
+                                                    {
+                                                        <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Delete">
+                                                            <a href="#" class="text-danger d-inline-block remove-item-btn" onclick="openDeleteModal('@item.DT_RowId')" data-id="@item.DT_RowId">
+                                                                <i class="ri-delete-bin-5-fill fs-16"></i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <div class="noresult" style="display: none">
+                            <div class="text-center">
+                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a"
+                                           style="width:75px;height:75px">
+                                </lord-icon>
+                                <h5 class="mt-2">Sorry! No Result Found</h5>
+                                <p class="text-muted mb-0">
+                                    We've searched more than 150+ customers
+                                    We did not find any
+                                    customers for your search.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="pagination-wrap hstack gap-2">
+                            <a class="page-item pagination-prev @(ViewBag.PageNumber == 1 ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">
+                                Previous
+                            </a>
+                            <ul class="pagination listjs-pagination mb-0">
+
+                            </ul>
+                            <a class="page-item pagination-next @(ViewBag.PageNumber == ViewBag.TotalPages ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">
+                                Next
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Modal -->
+                <div class="modal fade" id="showModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-light p-3">
+                                <h5 class="modal-title" id="exampleModalLabel">Add New Purchase Order</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
+                            </div>
+                            <form id="createForm" action="@Url.Action("CreateEditPO", "PurchaseOrder")" method="post">
+                                <div class="modal-body">
+
+                                    <div class="mb-3" id="ParentIDContainer">
+                                        <label asp-for="PONo" class="form-label">PO NO</label>
+                                        <input type="text" id="PONo" asp-for="PONo" class="form-control" placeholder="Enter POno">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="PORef" class="form-label">PO Ref</label>
+                                        <input type="text" id="PORef" asp-for="PORef" class="form-control" placeholder="Enter PORef">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="OrderDate" class="form-label">Order Date</label>
+                                        <input type="date" id="OrderDate" asp-for="OrderDate" class="form-control" placeholder="Select Order date">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="POTypeID" class="form-label">PO Type</label>
+                                        <select id="POTypeID" name="POTypeID" class="form-control" required>
+                                            <option value="">Select Type</option>
+                                            @foreach (var poType in ViewBag.POTypeList as List<SelectListItem>)
+                                            {
+                                                <option value="@poType.Value">@poType.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="SupplierID" class="form-label">Supplier</label>
+                                        <select id="SupplierID" name="SupplierID" class="form-control" required>
+                                            <option value="">Select Type</option>
+                                            @foreach (var supplier in ViewBag.SupplierList as List<SelectListItem>)
+                                            {
+                                                <option value="@supplier.Value">@supplier.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="ReceiverGST" class="form-label">Receiver GST</label>
+                                        <input type="text" id="ReceiverGST" asp-for="ReceiverGST" class="form-control" placeholder="Enter ReceiverGST">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="BillTo" class="form-label">Bill To</label>
+                                        <input type="text" id="BillTo" asp-for="BillTo" class="form-control" placeholder="Enter BillTo">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="ShipTo" class="form-label">Receiver GST</label>
+                                        <input type="text" id="ShipTo" asp-for="ShipTo" class="form-control" placeholder="Enter ShipTo">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="ItemID" class="form-label">Item</label>
+                                        <select id="ItemID" name="ItemID" class="form-control" required>
+                                            <option value="">Select Type</option>
+                                            @foreach (var poItemList in ViewBag.SelectedItemList as List<SelectListItem>)
+                                            {
+                                                <option value="@poItemList.Value">@poItemList.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Description" class="form-label">Description</label>
+                                        <input type="text" id="Description" asp-for="Description" class="form-control" placeholder="Enter Description">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label asp-for="Qty" class="form-label">QTY</label>
+                                        <input type="text" id="Qty" asp-for="Qty" class="form-control" placeholder="Enter Qty">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Unit" class="form-label">Unit</label>
+                                        <input type="text" id="Unit" asp-for="Unit" class="form-control" placeholder="Enter Unit">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="PriceIncludingGST" class="form-label">Price Including GST</label>
+                                        <input type="text" id="PriceIncludingGST" asp-for="PriceIncludingGST" class="form-control" placeholder="Enter Price">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="TotalAmount" class="form-label">Total Amount</label>
+                                        <input type="text" id="TotalAmount" asp-for="TotalAmount" class="form-control" placeholder="Enter Total Amount" readonly>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="PaymentTerms" class="form-label">Payment Terms</label>
+                                        <input type="text" id="PaymentTerms" asp-for="PaymentTerms" class="form-control" placeholder="Enter PaymentTerms">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="POCompanyID" class="form-label">Company</label>
+                                        <select id="POCompanyID" name="POCompanyID" class="form-control" required>
+                                            <option value="">Select Type</option>
+                                            @foreach (var company in ViewBag.POCompanyList as List<SelectListItem>)
+                                            {
+                                                <option value="@company.Value">@company.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" name="action" value="Create" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modals -->
+                @foreach (var item in ViewData["ItemList"] as List<IMS2.Models.PurchaseOrderModel>)
+                {
+                    <div class="modal fade" id="editModal-@item.DT_RowId" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-light p-3">
+                                    <h5 class="modal-title" id="editModalLabel">Edit Purchase Order</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form id="editForm-@item.DT_RowId" action="@Url.Action("CreateEditPO", "PurchaseOrder")" method="post" autocomplete="off">
+                                    <div class="modal-body">
+                                        <input type="hidden" id="EditDT_RowId" name="DT_RowId" value="@item.DT_RowId" />
+
+                                        <div class="mb-3" id="ParentIDContainer">
+                                            <label asp-for="PONo" class="form-label">PO NO</label>
+                                            <input type="text" id="PONo" value="@item.PO_No" asp-for="PONo" class="form-control" placeholder="Enter POno">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="PORef" class="form-label">PO Ref</label>
+                                            <input type="text" id="PORef" value="@item.PORef" asp-for="PORef" class="form-control" placeholder="Enter PORef">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="OrderDate" class="form-label">Order Date</label>
+                                            <input type="date" id="OrderDate" value="@item.OrderDate" asp-for="OrderDate" class="form-control" placeholder="Select Order date">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="POTypeID" class="form-label">PO Type</label>
+                                            <select id="POTypeID" name="POTypeID" class="form-control" required>
+                                                <option value="@item.POTypeID">@item.POType</option>
+                                                @foreach (var poType in ViewBag.POTypeList as List<SelectListItem>)
+                                                {
+                                                    if (item.POType != poType.Text)
+                                                    {
+                                                        <option value="@poType.Value">@poType.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="SupplierID" class="form-label">Supplier</label>
+                                            <select id="SupplierID" name="SupplierID" class="form-control" required>
+                                                <option value="@item.SupplierID">@item.Supplier</option>
+                                                @foreach (var supplier in ViewBag.SupplierList as List<SelectListItem>)
+                                                {
+                                                    if (item.Supplier != supplier.Text)
+                                                    {
+                                                        <option value="@supplier.Value">@supplier.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="ReceiverGST" class="form-label">Receiver GST</label>
+                                            <input type="text" id="ReceiverGST" value="@item.Receiver_GST" asp-for="ReceiverGST" class="form-control" placeholder="Enter ReceiverGST">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="BillTo" class="form-label">Bill To</label>
+                                            <input type="text" id="BillTo" asp-for="BillTo" value="@item.BillTo" class="form-control" placeholder="Enter BillTo">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="ShipTo" class="form-label">Receiver GST</label>
+                                            <input type="text" id="ShipTo" asp-for="ShipTo" value="@item.ShipTo" class="form-control" placeholder="Enter ShipTo">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="ItemID" class="form-label">Item</label>
+                                            <select id="ItemID" name="ItemID" class="form-control" required>
+                                                <option value="@item.ItemID">@item.Item</option>
+                                                @foreach (var poItemList in ViewBag.SelectedItemList as List<SelectListItem>)
+                                                {
+                                                    if (item.Item != poItemList.Text)
+                                                    {
+                                                        <option value="@poItemList.Value">@poItemList.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Description" class="form-label">Description</label>
+                                            <input type="text" id="Description" asp-for="Description" value="@item.Description" class="form-control" placeholder="Enter Description">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Qty" class="form-label">QTY</label>
+                                            <input type="text" id="Qty-@item.DT_RowId" asp-for="Qty" value="@item.Qty" class="form-control" placeholder="Enter Qty">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="Unit" class="form-label">Unit</label>
+                                            <input type="text" id="Unit" asp-for="Unit" value="@item.Unit" class="form-control" placeholder="Enter Unit">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="PriceIncludingGST" class="form-label">Price Including GST</label>
+                                            <input type="text" id="PriceIncludingGST-@item.DT_RowId" asp-for="PriceIncludingGST" value="@item.PriceIncludingGST" class="form-control" placeholder="Enter Price">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label asp-for="TotalAmount" class="form-label">Total Amount</label>
+                                            <input type="text" id="TotalAmount-@item.DT_RowId" asp-for="TotalAmount" value="@item.TotalAmount" class="form-control" placeholder="Enter Total Amount" readonly>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label asp-for="PaymentTerms" class="form-label">Payment Terms</label>
+                                            <input type="text" id="PaymentTerms" asp-for="PaymentTerms" value="@item.PaymentTerms" class="form-control" placeholder="Enter PaymentTerms">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="POCompanyID" class="form-label">Company</label>
+                                            <select id="POCompanyID" name="POCompanyID" class="form-control" required>
+                                                <option value="@item.POCompanyID">@item.PO_Company</option>
+                                                @foreach (var company in ViewBag.POCompanyList as List<SelectListItem>)
+                                                {
+                                                    if (item.PO_Company != company.Text)
+                                                    {
+                                                        <option value="@company.Value">@company.Text</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" name="action" value="Edit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Delete Modal -->
+                <div class="modal fade" id="deleteRecordModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Confirm Delete</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete this user?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Delete Modal -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+
+        $(document).ready(function () {
+            $('#Qty, #PriceIncludingGST').on('input', CalculateAmtbyQty);
+            $('[id^=Qty-], [id^=PriceIncludingGST-]').on('input', CalculateAmtbyQtyEdit);
+
+            $('.modal').on('show.bs.modal', function (e) {
+                if ($(this).attr('id').startsWith('editModal-')) {
+                    CalculateAmtbyQtyEdit.call($(this).find('[id^=Qty-]')[0]);
+                }
+            });
+        });
+
+        function CalculateAmtbyQty() {
+            var qty = $('#Qty').val();
+            var priceIncludingGST = $('#PriceIncludingGST').val();
+            var totalAmount = priceIncludingGST * qty;
+            $('#TotalAmount').val(totalAmount);
+        }
+
+        function CalculateAmtbyQtyEdit() {
+            debugger;
+            var id = $(this).attr('id').split('-')[1];
+            var qty = $('#Qty-' + id).val();
+            var priceIncludingGST = $('#PriceIncludingGST-' + id).val();
+            var totalAmount = priceIncludingGST * qty;
+            $('#TotalAmount-' + id).val(totalAmount);
+        }
+
+        $(document).ready(function () {
+            window.openDeleteModal = function (userId) {
+                $('#deleteRecordModal').modal('show');
+
+                $('#confirmDelete').off('click').on('click', function () {
+                    deleteUser(userId);
+                });
+            }
+
+            function deleteUser(userId) {
+                $.ajax({
+                    url: '@Url.Action("DeletePO", "PurchaseOrder")',
+                    type: 'DELETE',
+                    data: { id: userId },
+                    success: function (response) {
+                        $('#deleteRecordModal').modal('hide');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error deleting user.');
+                    }
+                });
+            }
+        });
+
+        $(document).ready(function () {
+            debugger;
+            $(document).ready(function () {
+                var userList = new List('customerList', {
+                    valueNames: ['PO_No', 'PORef', 'OrderDate', 'POType', 'Supplier', 'Item', 'Qty', 'ReceivedQty', 'AvailableQty', 'TotalAmount', 'BillTo', 'ShipTo', 'Partner', 'PaymentTerms', 'PO_Company'],
+                    pagination: {
+                        innerWindow: 1,
+                        outerWindow: 1,
+                        paginationClass: 'pagination',
+                        paginationItemClass: 'page-item',
+                        paginationAnchorClass: 'page-link',
+                        paginationActiveClass: 'active'
+                    }
+                });
+
+                $('.search').on('keyup', function () {
+                    var searchString = $(this).val().toLowerCase();
+                    userList.search(searchString);
+                    userList.update();
+                });
+            });
+        });
+
+        var selectedMFIName = $("#setting-field option:selected").text();
+        // retrieve cookie by name
+        function getCookie(name) {
+            var cookieValue = "";
+            if (document.cookie && document.cookie !== "") {
+                var cookies = document.cookie.split(";");
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $(document).ready(function () {
+            var selectedMFIName = getCookie("SelectedMFIName");
+            if (selectedMFIName) {
+                $("#selectedMFIName").text(selectedMFIName);
+            }
+        });
+
+    </script>
+}

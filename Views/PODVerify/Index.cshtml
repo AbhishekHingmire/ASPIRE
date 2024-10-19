@@ -1,0 +1,211 @@
+﻿@using IMS2.Helpers
+@{
+    ViewData["Title"] = "POD Verify";
+    ViewBag.Title = "POD Verify";
+    ViewBag.pTitle = "POD Verify";
+    ViewBag.pageTitle = "POD Verify";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+        <style>
+            .img-thumbnail {
+                width: 100%;
+                max-width: 200px;
+                border-radius: .25rem;
+                border: 1px solid #dee2e6;
+                padding: .25rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .text-center {
+                text-align: center;
+            }
+        </style>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="col-md-8 offset-md-2 mt-4">
+            <form id="frm">
+                <div class="form-group pt-3">
+                    <label for="txtApplicationNo">Application No.</label>
+                    <input id="txtApplicationNo" type="text" class="form-control" />
+                </div>
+                <div class="form-group text-center mt-3">
+                    <button type="button" class="btn btn-primary" onclick="GetPODIMGs();">Fetch Data</button>
+                </div>
+
+                <div class="form-group mt-4" id="divShowHide">
+                    <h5>Documents</h5>
+
+                    <div class="img-container mb-3">
+                        <label>Photo With Product:</label>
+                        <a href="" id="H_POD" target="_blank">
+                            <img id="IMG_POD" class="img-thumbnail" src=""/>
+                        </a>
+                    </div>
+
+                    <div class="img-container mb-3">
+                        <label>ID Proof Front:</label>
+                        <a href="" id="H_ProofFront" target="_blank">
+                            <img id="IMG_IDProofFront" class="img-thumbnail" src=""/>
+                        </a>
+                    </div>
+
+                    <div class="img-container mb-3">
+                        <label>ID Proof Back:</label>
+                        <a href="" id="H_ProofBack" target="_blank">
+                            <img id="IMG_IDProofBack" class="img-thumbnail" src=""/>
+                        </a>
+                    </div>
+
+                    <div class="img-container mb-3">
+                        <label>Invoice:</label>
+                        <a href="" id="H_Invoice" target="_blank">
+                            <img id="IMG_Invoice" class="img-thumbnail" src=""/>
+                        </a>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtDeliveryBoyRemarks">Delivery Boy Remarks:</label>
+                        <input type="text" id="txtDeliveryBoyRemarks" class="form-control" readonly="readonly" />
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-primary" onclick="DownloadIMG();">Download</button>
+                        <button id="btnMarkDelivered" type="button" class="btn btn-primary" onclick="MarkDelivered();">Mark Delivered</button>
+                    </div>
+                </div>
+            </form>
+            <br /><br />
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        function GetPODIMGs() {
+            var applicationNo = $("#txtApplicationNo").val();
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/PODVerify/GetOrderDetailsForPODVerify',
+                data: { ApplicationNo: applicationNo },
+                success: function (response) {
+                    console.log("Response", response);
+
+                    var data = response.data;
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        var podData = data[0]; 
+
+                        if (podData) {
+                            $("#IMG_POD").attr("src", podData.poD_IMG || '');
+                            $("#H_POD").attr("href", podData.poD_IMG || '');
+
+                            $("#IMG_IDProofFront").attr("src", podData.idProofFrontIMG || '');
+                            $("#H_ProofFront").attr("href", podData.idProofFrontIMG || '');
+
+                            $("#IMG_IDProofBack").attr("src", podData.idProofBackIMG || '');
+                            $("#H_ProofBack").attr("href", podData.idProofBackIMG || '');
+
+                            $("#IMG_Invoice").attr("src", podData.invoiceIMG || '');
+                            $("#H_Invoice").attr("href", podData.invoiceIMG || '');
+
+                            $("#txtDeliveryBoyRemarks").val(podData.deliveryBoyRemarks || '');
+
+                            $("#btnMarkDelivered").prop('disabled', podData.erpOrderStatus !== 9);
+                        } else {
+                            console.error("podData is undefined");
+                        }
+                    } else {
+                        console.error("Data is not an array or is empty");
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.error("Error occurred:", errorThrown);
+                }
+            });
+        }
+
+        function DownloadIMG() {
+            debugger;
+            var applicationNo = $("#txtApplicationNo").val();
+
+            $.ajax({
+                url: '/PODVerify/DownloadPODFilesByAppNo',
+                type: 'POST',
+                data: { ApplicationNo: applicationNo },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function (data, textStatus, xhr) {
+                    console.log("Data for Download :", data);
+                    var disposition = xhr.getResponseHeader('Content-Disposition');
+
+                    var filename = 'downloaded.zip'; 
+
+                    if (disposition) {
+                        var filenameMatch = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                        if (filenameMatch != null && filenameMatch[1]) {
+                            filename = filenameMatch[1].replace(/['"]/g, '');
+                        }
+                    }
+
+                    var url = window.URL.createObjectURL(new Blob([data]));
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error("Error downloading file: ", textStatus, errorThrown);
+                    alert("An error occurred while downloading the file.");
+                }
+            });
+        }
+
+        function MarkDelivered() {
+            var applicationNo = $("#txtApplicationNo").val();
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/PODVerify/MarkOrderDelivered', 
+                data: { applicationNo: applicationNo },
+                success: function (data) {
+                    if (data.result === 'OK') {
+                        alert('Order marked as delivered successfully.');
+                    } else {
+                        alert('Error: ' + (data.Message || 'Unknown error occurred.'));
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    var errorMessage = xhr.responseJSON ? xhr.responseJSON.Message : errorThrown;
+                    alert('Error: ' + errorMessage);
+                }
+            });
+        }
+
+    </script>
+}

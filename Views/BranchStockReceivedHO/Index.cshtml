@@ -1,0 +1,94 @@
+﻿@using IMS2.Helpers
+@{
+    ViewData["Title"] = "Branch Stock Received HO";
+    ViewBag.Title = "Branch Stock Received HO";
+    ViewBag.pTitle = "Branch Stock Received HO";
+    ViewBag.pageTitle = "Branch Stock Received HO";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    <style>
+        input[type="date"]::-webkit-datetime-edit {
+            color: transparent;
+        }
+
+        input[type="date"]::-webkit-date-and-time-value {
+            color: transparent;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="col-md-6" style="margin:auto;float:none;">
+            <form id="frm">
+                <div class="form-group">
+                    <label>Region</label>
+                    <select id="cboRegion" class="form-control" required>
+                        <option value="--All--">--All--</option>
+                        @foreach (var region in ViewBag.BranchTypesList as List<SelectListItem>)
+                        {
+                            <option value="@region.Text">@region.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Item</label>
+                    <select id="cboItem" class="form-control" required>
+                        @foreach (var item in ViewBag.ItemList as List<SelectListItem>)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Disbursement Status</label><br />
+                    <input type="radio" id="rbDisbStatusAll" name="DisbStatus" checked="checked" value="-1">
+                    <label for="rbDisbStatusAll">All</label><br>
+                    <input type="radio" id="rbDisbStatusUndisbursed" name="DisbStatus" value="0">
+                    <label for="rbDisbStatusUndisbursed">Undisbursed</label><br>
+                    <input type="radio" id="rbDisbStatusDisbursed" name="DisbStatus" value="1">
+                    <label for="rbDisbStatusDisbursed">Disbursed</label>
+                </div>
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-primary" id="downloadReportBtn">Download Report</button>
+                </div>
+            </form>
+            <br /><br />
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        $("#downloadReportBtn").click(function () {
+            var regionCode = $("#cboRegion option:selected").text();
+            if (!regionCode) {
+                regionCode = "--All--";  
+            }
+
+            var itemID = $("#cboItem option:selected").val();
+            var disbStatus = $('input[name="DisbStatus"]:checked').val();
+
+            var data = 'RegionCode=' + regionCode + '&ItemID=' + itemID + '&DisbStatus=' + disbStatus;
+
+            var url = '/BranchStockReceivedHO/ExportSalesReport?' + data;
+
+            window.open(url, '_blank');
+        });
+    </script>
+
+}

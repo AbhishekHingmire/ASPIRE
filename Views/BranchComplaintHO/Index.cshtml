@@ -1,0 +1,239 @@
+﻿@using IMS2.Helpers
+@{
+    ViewData["Title"] = "Branch Complaint List";
+    ViewBag.Title = "Branch Complaint List";
+    ViewBag.pTitle = "Branch Complaint List";
+    ViewBag.pageTitle = "Branch Complaint List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span></h5>
+        </div>
+        <div class="col-md-6" style="margin:auto;float:none;">
+            <form id="frm">
+                <div class="form-group">
+                    <label class="form-label">Region</label>
+                    <select id="BranchTypeID" class="form-control" required>
+                        <option value="">Select Branch Type</option>
+                        @foreach (var branch in ViewBag.BranchTypesList as List<SelectListItem>)
+                        {
+                            <option value="@branch.Value">@branch.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Branch Code</label>
+                    <select id="cboBranchCode" class="form-control" required>
+                        <option value="">Select Branch Code</option>
+                        <!-- Options will be populated via AJAX -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Item</label>
+                    <select id="txtItem" class="form-control" required>
+                        <option value="">Select Item Type</option>
+                        @foreach (var item in ViewBag.ItemList as List<SelectListItem>)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <br />
+                <div class="form-group text-right">
+                    <button type="button" class="btn btn-primary" onclick="GetData();">Ok</button>
+                </div>
+            </form>
+            <br /><br />
+        </div>
+        <div class="card" id="customerList">
+            <div class="card-body border-bottom-dashed border-bottom"></div>
+            <div class="card-body">
+                <div>
+                    <div class="table-responsive table-card mb-1">
+                        <table class="table align-middle" id="tblBranchStock">
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class="sort" data-sort="SLNo">SL No</th>
+                                    <th class="sort" data-sort="ComplaintCode">Complaint Code</th>
+                                    <th class="sort" data-sort="ComplaintType">Complaint Type</th>
+                                    <th class="sort" data-sort="SupplierRefferenceNo">Supplier Refference No</th>
+                                    <th class="sort" data-sort="State">State</th>
+                                    <th class="sort" data-sort="Region">Region</th>
+                                    <th class="sort" data-sort="BranchCode">Branch Code</th>
+                                    <th class="sort" data-sort="BranchName">Branch Name</th>
+                                    <th class="sort" data-sort="BMContactName">ABM Contact Name</th>
+                                    <th class="sort" data-sort="BMContactNo">ABM Contact No</th>
+                                    <th class="sort" data-sort="Item">Item</th>
+                                    <th class="sort" data-sort="BranchAddress">Branch Address</th>
+                                    <th class="sort" data-sort="BranchContactNo">Branch Contact No</th>
+                                    <th class="sort" data-sort="NoofDefectiveUnits">No of Defective Units</th>
+                                    <th class="sort" data-sort="Problem">Problem</th>
+                                    <th class="sort" data-sort="CreatedOn">Created On</th>
+                                    <th class="sort" data-sort="Status">Status</th>
+                                    <th class="sort" data-sort="Resolved">Resolved</th>
+                                    <th class="sort" data-sort="ResolvedOn">Resolved On</th>
+                                    <th class="sort" data-sort="Last Remarks">Last Remarks</th>
+                                    <th class="sort" data-sort="LastRemarksOn">Last Remarks On</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list">
+                                <!-- Data rows will be inserted here -->
+                            </tbody>
+                        </table>
+                        <div class="noresult" style="display: none">
+                            <div class="text-center">
+                                <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a"
+                                           style="width:75px;height:75px">
+                                </lord-icon>
+                                <h5 class="mt-2">Sorry! No Result Found</h5>
+                                <p class="text-muted mb-0">
+                                    We've searched more than 150+ customers
+                                    We did not find any customers for your search.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="pagination-wrap hstack gap-2">
+                            <a class="page-item pagination-prev @(ViewBag.PageNumber == 1 ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize })">
+                                Previous
+                            </a>
+                            <ul class="pagination listjs-pagination mb-0"></ul>
+                            <a class="page-item pagination-next @(ViewBag.PageNumber == ViewBag.TotalPages ? "disabled" : "")" href="@Url.Action("Index", new { pageNumber = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize })">
+                                Next
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        $(document).ready(function () {
+            var encodedMFIName = "@Context.Request.Cookies["SelectedMFIName"]";
+            var decodedMFIName = decodeURIComponent(encodedMFIName);
+            $('#selectedMFIName').text(decodedMFIName);
+
+            var defaultRegionId = -999;
+
+            loadBranchCodes(defaultRegionId);
+
+            $('#BranchTypeID').change(function () {
+                var regionId = $(this).val();
+                if (!regionId) {
+                    regionId = defaultRegionId;
+                }
+                loadBranchCodes(regionId);
+            });
+        });
+
+        function loadBranchCodes(regionId) {
+            $.ajax({
+                url: '@Url.Action("GetBranchCodes", "BranchComplaintHO")',
+                type: 'POST',
+                data: { regionId: regionId },
+                success: function (data) {
+                    if (data.result === 'OK') {
+                        var branchCodeSelect = $('#cboBranchCode');
+                        branchCodeSelect.empty();
+                        branchCodeSelect.append('<option value="">Select Branch Code</option>');
+
+                        $.each(data.options, function (index, item) {
+                            branchCodeSelect.append('<option value="' + item.id + '">' + item.code + '</option>');
+                        });
+                    } else {
+                        console.error('Unexpected result:', data.Result);
+                        alert('No branch codes found.');
+                    }
+                },
+                error: function () {
+                    alert('Error fetching branch codes');
+                }
+            });
+        }
+
+        function GetData() {
+            debugger
+            var branchCode = $('#cboBranchCode').val() || "--All--";
+            var itemId = $('#txtItem').val() || -1;
+            var regionCode = $('#BranchTypeID').val() || "--All--";
+
+            $.ajax({
+                url: '@Url.Action("GetBranchComplaintHOList", "BranchComplaintHO")',
+                type: 'POST',
+                data: {
+                    branchCode: branchCode,
+                    itemId: itemId,
+                    regionCode: regionCode
+                },
+                success: function (response) {
+                    var tableBody = $('#tblBranchStock tbody');
+                    tableBody.empty();
+
+                    if (response.result === 'OK') {
+                        if (response.options.length === 0) {
+                            tableBody.append(
+                                '<tr>' +
+                                '<td colspan="19" class="text-center">No record found</td>' +
+                                '</tr>'
+                            );
+                        } else {
+                            $.each(response.options, function (index, item) {
+                                tableBody.append(
+                                    '<tr>' +
+                                    '<td>' + item.slNo + '</td>' +
+                                    '<td>' + item.complaintCode + '</td>' +
+                                    '<td>' + item.complaintType + '</td>' +
+                                    '<td>' + item.supplierRefNo + '</td>' +
+                                    '<td>' + item.state + '</td>' +
+                                    '<td>' + item.region + '</td>' +
+                                    '<td>' + item.branchCode + '</td>' +
+                                    '<td>' + item.branchName + '</td>' +
+                                    '<td>' + item.ambmContactName + '</td>' +
+                                    '<td>' + item.ambmContactNo + '</td>' +
+                                    '<td>' + item.item + '</td>' +
+                                    '<td>' + item.branchOrCustomerAddress + '</td>' +
+                                    '<td>' + item.branchOrCustomerContactNo + '</td>' +
+                                    '<td>' + item.noOfDefectiveUnits + '</td>' +
+                                    '<td>' + item.problem + '</td>' +
+                                    '<td>' + item.createdOn + '</td>' +
+                                    '<td>' + item.status + '</td>' +
+                                    '<td>' + item.resolved + '</td>' +
+                                    '<td>' + item.resolvedOn + '</td>' +
+                                    '<td>' + item.lastRemark + '</td>' +
+                                    '<td>' + item.lastRemarkOn + '</td>' +
+                                    '</tr>'
+                                );
+                            });
+                        }
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Error fetching data.');
+                }
+            });
+        }
+
+
+
+    </script>
+}

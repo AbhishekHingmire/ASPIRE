@@ -1,0 +1,165 @@
+﻿@using IMS2.Helpers
+@{
+    ViewData["Title"] = "Import GRN";
+    ViewBag.Title = "Import GRN";
+    ViewBag.pTitle = "Import GRN";
+    ViewBag.pageTitle = "Import GRN";
+}
+
+@section styles
+{
+    <style>
+        .bar {
+            height: 38px;
+            background: green;
+        }
+
+        #spanMessage {
+            font-weight: bold;
+            color: #444444;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="card m-2">
+            <h5 id="spnSelMFI" class="m-2">
+                Selected MFI: <span id="selectedMFIName">@Context.Request.Cookies["SelectedMFIName"]</span>
+            </h5>
+        </div>
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Import GRN</h3>
+            </div>
+            <div class="box-body" style="overflow: hidden;">
+                <div class="form-group col-sm-12">
+                    <section class="b-form" style="box-shadow: none; background-color: transparent;">
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <fieldset>
+                                <div class="textfield" style="margin-top:10px">
+                                    <i>Step 1:</i>
+                                    <div class="top-space-medium" style="display:inline-block;">
+                                        <input class="btn btn-primary" type="button" title="Download Template" value="Download Template" onclick="downloadTemplate(false);" />
+                                    </div>
+                                </div>
+                                @if (ViewBag.ScreenRightRank >= (int)EnumScreenRights.Create)
+                                {
+                                    <div class="textfield" style="margin-top:10px">
+                                        <div class="top-space-medium" style="display:inline-block;">
+                                            <i>Step 2:</i>
+                                        </div>
+                                        <div class="top-space-medium" style="display:inline-block;">
+                                            <span class="btn btn-primary fileinput-button" id="btnUploadExcel" style="margin-bottom: 10px;">
+                                                <span>Upload filled template</span>
+                                                <input id="fileupload" type="file" name="file" accept=".xlsx" />
+                                            </span>
+                                        </div>
+                                        <div id="progress" class="progress" style="height: 25px;">
+                                            <div class="progress-bar" style="line-height: 25px; height: 100%;"></div>
+                                        </div>
+                                    </div>
+                                }
+                                <br /><br /><br />
+                                <div class="textfield" style="margin-top:10px">
+                                    <i>Download GRN Data:  </i>
+                                    <div class="top-space-medium" style="display:inline-block;">
+                                        <input class="btn btn-primary" type="button" title="Download GRN Data" value="Download GRN Data" onclick="downloadGRNData();">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <div id="error_container"></div>
+                        <div id="downloadErrorReportContainer" style="display:none; margin-top: 10px;">
+                            <button id="downloadErrorReportButton" class="btn btn-danger">Download Error Report</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- list.js min js -->
+    <script src="~/assets/libs/list.js/list.min.js"></script>
+    <script src="~/assets/libs/list.pagination.js/list.pagination.min.js"></script>
+
+    <!-- App js -->
+    <script src="~/assets/js/app.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var encodedMFIName = "@Context.Request.Cookies["SelectedMFIName"]";
+            var decodedMFIName = decodeURIComponent(encodedMFIName);
+            $('#selectedMFIName').text(decodedMFIName);
+
+            $('#fileupload').on('change', function (e) {
+                var fileInput = e.target;
+                var formData = new FormData();
+                var file = fileInput.files[0];
+
+                if (file) {
+                    formData.append('file', file);
+
+                    $.ajax({
+                        url: '@Url.Action("ImportGRNData", "ImportGRN")',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        xhr: function () {
+                            var xhr = new XMLHttpRequest();
+                            xhr.upload.addEventListener('progress', function (e) {
+                                if (e.lengthComputable) {
+                                    var percentComplete = Math.round((e.loaded / e.total) * 100);
+                                    $('.progress-bar').css('width', percentComplete + '%').attr('aria-valuenow', percentComplete).text(percentComplete + '%');
+                                }
+                            }, false);
+                            return xhr;
+                        },
+                        success: function (response) {
+                            $("#progress .progress-bar").css("background-color", "green");
+
+                            var errorReportLink = response.failedCount > 0 ? response.errorFile : '';
+                            if (errorReportLink) {
+                                $('#downloadErrorReportButton').attr('onclick', `window.location.href='${errorReportLink}'`);
+                                $('#downloadErrorReportContainer').show();
+                            } else {
+                                $('#downloadErrorReportContainer').hide();
+                            }
+
+                            $('#error_container').html(`
+                                                        <div id="spanMessage">
+                                                            Total records ${response.totalCount} out of uploaded ${response.successCount} and failed ${response.failedCount}
+                                                        </div>
+                                                    `);
+                        },
+                        error: function (xhr, status, error) {
+                            $("#progress .progress-bar").css("background-color", "red");
+                            $('#error_container').html('<div id="spanMessage">An error occurred while uploading the file.</div>');
+                            $('#downloadErrorReportContainer').hide();
+                        }
+                    });
+                }
+            });
+        });
+
+        function downloadTemplate(withData) {
+            var url = '@Url.Action("ExportTemplate", "ImportSalesOrder")';
+            var fullUrl = url + '?ID=11&IsWithData=' + encodeURIComponent(withData);
+            window.open(fullUrl, '_self');
+        }
+
+        function downloadGRNData() {
+            var url = '@Url.Action("ExportTemplate", "ImportSalesOrder")';
+            var fullUrl = url + '?ID=15&IsWithData=true';
+            window.open(fullUrl, '_blank');
+        }
+    </script>
+}

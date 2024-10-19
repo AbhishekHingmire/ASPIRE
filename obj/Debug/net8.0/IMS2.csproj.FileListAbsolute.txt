@@ -1,0 +1,279 @@
+C:\Aspire_Git\bin\Debug\net8.0\appsettings.Development.json
+C:\Aspire_Git\bin\Debug\net8.0\appsettings.json
+C:\Aspire_Git\bin\Debug\net8.0\package.json
+C:\Aspire_Git\bin\Debug\net8.0\IMS2.staticwebassets.runtime.json
+C:\Aspire_Git\bin\Debug\net8.0\IMS2.exe
+C:\Aspire_Git\bin\Debug\net8.0\IMS2.deps.json
+C:\Aspire_Git\bin\Debug\net8.0\IMS2.runtimeconfig.json
+C:\Aspire_Git\bin\Debug\net8.0\IMS2.dll
+C:\Aspire_Git\bin\Debug\net8.0\IMS2.pdb
+C:\Aspire_Git\bin\Debug\net8.0\Azure.Core.dll
+C:\Aspire_Git\bin\Debug\net8.0\Azure.Identity.dll
+C:\Aspire_Git\bin\Debug\net8.0\ClosedXML.dll
+C:\Aspire_Git\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+C:\Aspire_Git\bin\Debug\net8.0\EPPlus.dll
+C:\Aspire_Git\bin\Debug\net8.0\EPPlus.Interfaces.dll
+C:\Aspire_Git\bin\Debug\net8.0\EPPlus.System.Drawing.dll
+C:\Aspire_Git\bin\Debug\net8.0\ExcelNumberFormat.dll
+C:\Aspire_Git\bin\Debug\net8.0\Irony.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Aspire_Git\bin\Debug\net8.0\ICSharpCode.SharpZipLib.dll
+C:\Aspire_Git\bin\Debug\net8.0\SixLabors.Fonts.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Drawing.Common.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.IO.Packaging.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Memory.Data.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Runtime.Caching.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Windows.Extensions.dll
+C:\Aspire_Git\bin\Debug\net8.0\XLParser.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+C:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.AssemblyReference.cache
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.AssemblyInfoInputs.cache
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.AssemblyInfo.cs
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.CoreCompileInputs.cache
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.MvcApplicationPartsAssemblyInfo.cache
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.RazorAssemblyInfo.cache
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.RazorAssemblyInfo.cs
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.sourcelink.json
+C:\Aspire_Git\obj\Debug\net8.0\staticwebassets.build.json
+C:\Aspire_Git\obj\Debug\net8.0\staticwebassets.development.json
+C:\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.IMS2.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.build.IMS2.props
+C:\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.IMS2.props
+C:\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.IMS2.props
+C:\Aspire_Git\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Aspire_Git\obj\Debug\net8.0\scopedcss\bundle\IMS2.styles.css
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.Up2Date
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.dll
+C:\Aspire_Git\obj\Debug\net8.0\refint\IMS2.dll
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.pdb
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.genruntimeconfig.cache
+C:\Aspire_Git\obj\Debug\net8.0\ref\IMS2.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Web.Mvc.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Web.Razor.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Web.Helpers.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.Deployment.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.Razor.dll
+C:\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.dll
+C:\Aspire_Git\bin\Debug\net8.0\Microsoft.Web.Infrastructure.dll
+C:\Aspire_Git\bin\Debug\net8.0\QRCoder.dll
+C:\Aspire_Git\bin\Debug\net8.0\Rotativa.dll
+C:\Aspire_Git\bin\Debug\net8.0\Rotativa.AspNetCore.dll
+C:\Aspire_Git\obj\Debug\net8.0\IMS2.MvcApplicationPartsAssemblyInfo.cs
+E:\Aspire_Git\bin\Debug\net8.0\appsettings.Development.json
+E:\Aspire_Git\bin\Debug\net8.0\appsettings.json
+E:\Aspire_Git\bin\Debug\net8.0\package.json
+E:\Aspire_Git\bin\Debug\net8.0\IMS2.staticwebassets.runtime.json
+E:\Aspire_Git\bin\Debug\net8.0\IMS2.exe
+E:\Aspire_Git\bin\Debug\net8.0\IMS2.deps.json
+E:\Aspire_Git\bin\Debug\net8.0\IMS2.runtimeconfig.json
+E:\Aspire_Git\bin\Debug\net8.0\IMS2.dll
+E:\Aspire_Git\bin\Debug\net8.0\IMS2.pdb
+E:\Aspire_Git\bin\Debug\net8.0\Azure.Core.dll
+E:\Aspire_Git\bin\Debug\net8.0\Azure.Identity.dll
+E:\Aspire_Git\bin\Debug\net8.0\ClosedXML.dll
+E:\Aspire_Git\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+E:\Aspire_Git\bin\Debug\net8.0\EPPlus.dll
+E:\Aspire_Git\bin\Debug\net8.0\EPPlus.Interfaces.dll
+E:\Aspire_Git\bin\Debug\net8.0\EPPlus.System.Drawing.dll
+E:\Aspire_Git\bin\Debug\net8.0\ExcelNumberFormat.dll
+E:\Aspire_Git\bin\Debug\net8.0\Irony.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Web.Mvc.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Web.Razor.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Web.Helpers.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.Deployment.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.Razor.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.Web.Infrastructure.dll
+E:\Aspire_Git\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+E:\Aspire_Git\bin\Debug\net8.0\QRCoder.dll
+E:\Aspire_Git\bin\Debug\net8.0\Rotativa.dll
+E:\Aspire_Git\bin\Debug\net8.0\Rotativa.AspNetCore.dll
+E:\Aspire_Git\bin\Debug\net8.0\ICSharpCode.SharpZipLib.dll
+E:\Aspire_Git\bin\Debug\net8.0\SixLabors.Fonts.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Drawing.Common.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.IO.Packaging.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Memory.Data.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Runtime.Caching.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Security.Permissions.dll
+E:\Aspire_Git\bin\Debug\net8.0\System.Windows.Extensions.dll
+E:\Aspire_Git\bin\Debug\net8.0\XLParser.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+E:\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.AssemblyReference.cache
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.GeneratedMSBuildEditorConfig.editorconfig
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.AssemblyInfoInputs.cache
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.AssemblyInfo.cs
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.CoreCompileInputs.cache
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.MvcApplicationPartsAssemblyInfo.cs
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.MvcApplicationPartsAssemblyInfo.cache
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.RazorAssemblyInfo.cache
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.RazorAssemblyInfo.cs
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.sourcelink.json
+E:\Aspire_Git\obj\Debug\net8.0\staticwebassets.build.json
+E:\Aspire_Git\obj\Debug\net8.0\staticwebassets.development.json
+E:\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.IMS2.Microsoft.AspNetCore.StaticWebAssets.props
+E:\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.build.IMS2.props
+E:\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.IMS2.props
+E:\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.IMS2.props
+E:\Aspire_Git\obj\Debug\net8.0\staticwebassets.pack.json
+E:\Aspire_Git\obj\Debug\net8.0\scopedcss\bundle\IMS2.styles.css
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.Up2Date
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.dll
+E:\Aspire_Git\obj\Debug\net8.0\refint\IMS2.dll
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.pdb
+E:\Aspire_Git\obj\Debug\net8.0\IMS2.genruntimeconfig.cache
+E:\Aspire_Git\obj\Debug\net8.0\ref\IMS2.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\appsettings.Development.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\appsettings.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\package.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\IMS2.staticwebassets.runtime.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\IMS2.exe
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\IMS2.deps.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\IMS2.runtimeconfig.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\IMS2.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\IMS2.pdb
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Azure.Core.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\ClosedXML.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\DocumentFormat.OpenXml.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\EPPlus.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\EPPlus.Interfaces.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\EPPlus.System.Drawing.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\ExcelNumberFormat.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Irony.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Web.Mvc.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Web.Razor.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Web.Helpers.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.Deployment.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.Razor.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Web.WebPages.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.Web.Infrastructure.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\QRCoder.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Rotativa.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\Rotativa.AspNetCore.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\ICSharpCode.SharpZipLib.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\SixLabors.Fonts.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Drawing.Common.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.IO.Packaging.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Memory.Data.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Runtime.Caching.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Security.Permissions.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\System.Windows.Extensions.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\XLParser.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.AssemblyReference.cache
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.AssemblyInfoInputs.cache
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.AssemblyInfo.cs
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.CoreCompileInputs.cache
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.RazorAssemblyInfo.cache
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.RazorAssemblyInfo.cs
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.sourcelink.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\staticwebassets.build.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\staticwebassets.development.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.IMS2.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.build.IMS2.props
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.IMS2.props
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.IMS2.props
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\staticwebassets.pack.json
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\scopedcss\bundle\IMS2.styles.css
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.csproj.Up2Date
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\refint\IMS2.dll
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.pdb
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\IMS2.genruntimeconfig.cache
+C:\Users\abhis\OneDrive\Desktop\Ofc Projects\ASPIRE\Aspire_Git\obj\Debug\net8.0\ref\IMS2.dll
